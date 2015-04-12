@@ -215,7 +215,7 @@ td {
 /* Header */
 
 header {
-	background-color: #171717;
+	background-color: #fff;
 	color: #FDFDFB;
   width:170px;
   float:left;
@@ -246,7 +246,10 @@ h1.header {
 }
 
 
-h1.header, a.header, a.name, header a{
+h1.header {
+}
+
+a.header, a.name, header a{
 	color: #fff;
 }
 
