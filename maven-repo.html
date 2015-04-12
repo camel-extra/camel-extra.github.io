@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Camel Extra Component Website by camel-extra</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Camel Extra Component Website</h1>
+        <p class="header"><img src="/images/camel-extra.png" width="90" height="87"/></p>
+
+        <ul>
+          <li><a class="buttons github" href="https://github.com/camel-extra">GitHub Profile</a></li>
+        </ul>
+
+      </header>
+      <section>
+        <h2>
+<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven Repository Configuration</h2>
+
+<p>We deploy all releases of camel-extra to maven central. In addition we also maintain a snapshot repository tree at the public nexus instance of sonatype. The following section provides some documentation on how to configure explicitly repositories hosting camel-extra artefacts.</p>
+<h2>Release Artefacts</h2>
+
+<p>The camel-extra release repository hosted at Maven Central can be configured via the following repository configuration snippet.</p>
+
+<pre>
+&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;central-releases&lt;/id&gt;
+    &lt;name&gt;Maven Central Release Repository&lt;/name&gt;
+    &lt;url&gt;http://repo1.maven.org/maven2/&lt;/url&gt;
+    &lt;releases&gt;
+       &lt;enabled&gt;true&lt;/enabled&gt;
+     &lt;/releases&gt;
+    &lt;snapshots&gt;
+      &lt;enabled&gt;false&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+</pre>
+<h2>Snapshot Artefacts</h2>
+
+<p>The camel-extra snapshot repository hosted at OSS Sonatype can be configured via the following repository configuration snippet.</p>
+
+<pre>
+&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;sonatype-snapshots&lt;/id&gt;
+    &lt;name&gt;OSS Sonatype Snapshot Repository&lt;/name&gt;
+    &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots/&lt;/url&gt;
+    &lt;releases&gt;
+       &lt;enabled&gt;false&lt;/enabled&gt;
+     &lt;/releases&gt;
+    &lt;snapshots&gt;
+      &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+</pre>
+
+<p>As of camel-extra 2.14.0 we have a second snapshot repository configured to facilitate the development. The repo is hosted at cloudbees.</p>
+
+<pre>
+&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;sonatype-snapshots&lt;/id&gt;
+    &lt;name&gt;OSS Sonatype Snapshot Repository&lt;/name&gt;
+    &lt;url&gt;https://repository-camel-extra.forge.cloudbees.com/snapshot/&lt;/url&gt;
+    &lt;releases&gt;
+       &lt;enabled&gt;false&lt;/enabled&gt;
+     &lt;/releases&gt;
+    &lt;snapshots&gt;
+      &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+</pre>
+
+      </section>
+      <footer>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="release-notes.html">Release Notes</a></li>
+          <li><a href="maven-repo.html">Maven Repository</a></li>
+          <!--li></li>
+          <li></li-->
+        </ul>
+
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>
