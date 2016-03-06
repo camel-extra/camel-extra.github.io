@@ -1,0 +1,107 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Camel Extra Component Website by camel-extra</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Camel Extra Component Website</h1>
+        <p class="header"><img src="/images/camel-extra.png" width="90" height="87"/></p>
+
+        <ul>
+          <li><a class="buttons github" href="https://github.com/camel-extra">GitHub Profile</a></li>
+        </ul>
+
+      </header>
+      <section>
+        <h2><a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release Guide</h2>
+
+
+<h3>Prerequisites</h3>
+
+<p>You need to edit your ~/.m2/settings.xml to add the camel-extra servers. So your XML should look something like...</p>
+
+<pre>
+&lt;?xml version="1.0"?&gt;
+&lt;settings&gt;
+    &lt;servers&gt;
+        &lt;server&gt;
+            &lt;id&gt;sonatype-nexus-staging&lt;/id&gt;
+            &lt;username&gt;MY_SONATYPE_USERNAME&lt;/username&gt;
+            &lt;password&gt;MY_SONATYPE_PASSWORD&lt;/password&gt;
+        &lt;/server&gt;
+        &lt;server&gt;
+            &lt;id&gt;sonatype-nexus-snapshots&lt;/id&gt;
+            &lt;username&gt;MY_SONATYPE_USERNAME&lt;/username&gt;
+            &lt;password&gt;MY_SONATYPE_PASSWORD&lt;/password&gt;
+        &lt;/server&gt;
+...
+</pre>
+
+<p>If you are a committer you should then be able to submit a snapshot via</p>
+
+<p><code>
+mvn deploy
+</code></p>
+
+<h4>Before preparing the release</h4>
+
+<ul>
+<li>make sure that you can build project locally for branch being released with the following command
+<code>
+mvn clean install -PwithRatCheck
+</code></li>
+<li>make sure that build for branch being released succeeds on the <a href="https://camel-extra.ci.cloudbees.com">CI server</a></li>
+</ul>
+
+<h4>Performing a release</h4>
+
+<p>Use the normal maven release plugin.</p>
+
+<pre>
+mvn release:clean
+mvn -Dusername=MY_GOOGLE_ACCOUNT_NAME -Darguments="-Dgpg.passphrase=MY_GPG_PASSPHRASE" release:prepare
+mvn -Dusername=MY_GOOGLE_ACCOUNT_NAME -Darguments="-Dgpg.passphrase=MY_GPG_PASSPHRASE" release:perform
+</pre>
+
+<h4>Activating Maven Central synchronization</h4>
+
+<ul>
+<li>close release candidate staged to the Sonatype Nexus</li>
+<li>send staging repository link to the mailing lists so the others could verify the release candidate</li>
+<li>collect +1s from the other Camel Extra riders :)</li>
+<li>release staged artifacts via Sonatype Nexus</li>
+</ul>
+
+<p>More information related to the Sonatype release process can be found in the <a href="http://central.sonatype.org/pages/ossrh-guide.html">Sonatype OSS Maven Repository Usage Guide</a>.</p></markdown-widget>
+
+</section>
+      <footer>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="release-notes.html">Release Notes</a></li>
+          <li><a href="maven-repo.html">Maven Repository</a></li>
+          <li><a href="building.html">Building</a></li>
+          <li><a href="getting-involved.html">Getting Involved</a></li>
+          <li><a href="release-guide.html">Release Guide</a></li>
+          <!--li></li>
+          <li></li-->
+        </ul>
+
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

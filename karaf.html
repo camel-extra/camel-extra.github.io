@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Camel Extra Component Website by camel-extra</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Camel Extra Component Website</h1>
+        <p class="header"><img src="/images/camel-extra.png" width="90" height="87"/></p>
+
+        <ul>
+          <li><a class="buttons github" href="https://github.com/camel-extra">GitHub Profile</a></li>
+        </ul>
+
+      </header>
+      <section>
+        <h2><a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Karaf Support</h2>
+
+<p>Like the <a href="http://camel.apache.org">Apache Camel</a> project, Camel-Extra is designed to work
+within the <a href="http://karaf.apache.org">Apache Karaf</a> OSGi container.</p>
+
+<p>As of Camel-Extra 2.11.0 we provide feature descriptors allowing to easily install any
+camel-extra component and resolve their dependencies.</p>
+
+<h3>Preparing Karaf for Camel-Extra</h3>
+
+<p>The preparation instructions for Karaf correspond the preparation section of the
+<a href="http://camel.apache.org/karaf.html">Camel Karaf</a> documentation.</p>
+
+<blockquote>
+  NOTE: Use of camel-db4o Component
+  
+  <p>In addition to the standard preparations the camel-db4o component requires the setup of
+  another maven repository to resolve the 'com.db4o/db4o-core-java5/8.0' bundle.
+  One option is to add the following line to your 'org.ops4j.pax.url.mvn.cfg' in your
+  '$KARAF_HOME/etc/' folder to your 'org.ops4j.pax.url.mvn.repositories':<br>
+  <code>
+   http://svn.codespot.com/a/apache-extras.org/camel-extra/maven2/others/@id=camel-extra-others<br>
+  </code></p>
+</blockquote>
+
+<h3>Install Camel-Extra in Karaf</h3>
+
+<p>To add the camel-extra features, you need to register the feature descriptor via the
+following command:</p>
+
+<p><code>
+karaf@root&gt; features:addurl mvn:org.apache-extras.camel-extra.karaf/camel-extra/2.11.0/xml/features
+</code></p>
+
+<p>Now you can find all camel-extra features that are available:</p>
+
+<p><code>
+karaf@root&gt; features:list | grep camel-extra<br>
+[uninstalled] [2.11.0         ] camel-db4o                    camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-esper                   camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-exist                   camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-hibernate               camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-jboss                   camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-jboss6                  camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-jcifs                   camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-jgroups                 camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-rcode                   camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-virtualbox              camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-vtdxml                  camel-extra-2.11.0 <br>
+[uninstalled] [2.11.0         ] camel-zeromq                  camel-extra-2.11.0 
+</code></p>
+
+<p>To install a component, you can execute:</p>
+
+<p><code>
+karaf@root&gt; features:install camel-rcode<br>
+karaf@root&gt; features:list | grep camel-rcode<br>
+[installed  ] [2.11.0         ] camel-rcode                             camel-extra-2.11.0 <br>
+</code></p>
+
+<p>All dependencies that are required for the component will be pulled automatically. In the
+given example , the feature resolves the following dependencies:</p>
+
+<p>
+karaf@root&gt; features:info camel-rcode</p>
+
+<h3>Description of camel-rcode 2.11.0 feature</h3>
+
+<pre>Feature has no configuration
+Feature has no configuration files
+Feature depends on:
+  camel 2.11.0
+Feature contains followed bundles:
+ wrap:mvn:org.nuiton.thirdparty/REngine/0.6-1 start-level=50
+ wrap:mvn:org.nuiton.thirdparty/Rserve/0.6-1 start-level=50
+ mvn:org.apache-extras.camel-extra/camel-rcode/2.11.0 start-level=50
+...</pre>
+
+<pre>karaf@root&gt; features:list | grep camel
+[installed  ] [2.11.0         ] camel                                   camel-2.11.0 
+[installed  ] [2.11.0         ] camel-core                              camel-2.11.0 
+[installed  ] [2.11.0         ] camel-spring                            camel-2.11.0 
+[installed  ] [2.11.0         ] camel-blueprint                         camel-2.11.0 
+...
+[installed  ] [2.11.0         ] camel-rcode                             camel-extra-2.11.0 </pre>
+
+<pre>karaf@root&gt; osgi:list
+START LEVEL 100 , List Threshold: 50
+   ID   State         Blueprint      Spring    Level  Name
+[  85] [Active     ] [            ] [       ] [   50] camel-core (2.11.0)
+[  86] [Active     ] [Created     ] [       ] [   50] camel-karaf-commands (2.11.0)
+...
+[ 102] [Active     ] [            ] [       ] [   50] camel-spring (2.11.0)
+[ 103] [Active     ] [Created     ] [       ] [   50] camel-blueprint (2.11.0)
+[ 104] [Active     ] [            ] [       ] [   50] wrap_mvn_org.nuiton.thirdparty_REngine_0.6-1 (0)
+[ 105] [Active     ] [            ] [       ] [   50] wrap_mvn_org.nuiton.thirdparty_Rserve_0.6-1 (0)
+[ 106] [Active     ] [            ] [       ] [   50] camel-rcode (2.11.0)
+...</pre>
+
+<p>```</p>
+
+<h4>Additional Resources</h4>
+
+<p>You can find further information on the relation of Apache Camel and Apache Karaf within
+the <a href="http://camel.apache.org/karaf.html">Camel documentation</a>.</p>
+
+<p>The documentation is a useful resource providing also a compatibility list of Camel and
+Karaf, the Camel-Extra project adheres to.</p>
+
+<p>Additional resources about Karaf can be found within the
+<a href="http://repo1.maven.org/maven2/org/apache/karaf/manual/2.3.0/manual-2.3.0.pdf">Karaf manual</a>.</p></markdown-widget>
+        </div>
+</section>
+      <footer>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="release-notes.html">Release Notes</a></li>
+          <li><a href="maven-repo.html">Maven Repository</a></li>
+          <li><a href="building.html">Building</a></li>
+          <li><a href="getting-involved.html">Getting Involved</a></li>
+          <li><a href="release-guide.html">Release Guide</a></li>
+          <!--li></li>
+          <li></li-->
+        </ul>
+
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

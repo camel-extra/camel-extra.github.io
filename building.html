@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Camel Extra Component Website by camel-extra</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Camel Extra Component Website</h1>
+        <p class="header"><img src="/images/camel-extra.png" width="90" height="87"/></p>
+
+        <ul>
+          <li><a class="buttons github" href="https://github.com/camel-extra">GitHub Profile</a></li>
+        </ul>
+
+      </header>
+      <section>
+        <h2><a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building</h2>
+
+<p>The Camel Extra project uses <a href="http://maven.apache.org/">Maven</a> as its build tool. If you don't fancy using Maven you can use your IDE directly or <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.apache-extras.camel-extra%22">Download</a> a distribution.</p>
+
+<h3>Prequisites</h3>
+
+<ul>
+<li>Download and <a href="http://maven.apache.org/start/install.htm">install Maven</a></li>
+<li>Get the latest <a href="https://github.com/camel-extra/camel-extra">Source</a></li>
+</ul>
+
+<h4>A normal build</h4>
+
+<pre>
+mvn install
+</pre>
+
+<h4>Doing a Quick Build</h4>
+
+<p>The following avoids running all the unit test cases</p>
+
+<pre>
+mvn -Dtest=false install
+</pre>
+
+<h4>Using an IDE</h4>
+
+<p>If you prefer to use an IDE then you can auto-generate the IDE's project files using maven plugins. e.g.</p>
+
+<pre><code>
+mvn eclipse:eclipse
+</pre>
+
+<p>or if you have an older version of IDEA then try this (IDEA 7.0 can open pom.xml files directly)</p>
+
+<pre>
+mvn idea:idea
+</pre>
+
+<p>If you have not already done so, you will need to make Eclipse aware of the Maven repository so that it can build everything. In the preferences, go to Java-&gt;Build Path-&gt;Classpath and define a new Classpath Variable named <strong>M2_REPO</strong> that points to your local Maven repository</p>
+
+<ul>
+<li>on unix its  <em>~/.m2/repository</em></li>
+<li>on windows its  _c:\Documents and Settings_</li>
+</ul>
+
+<p>&lt;user&gt;</p>
+
+<p>.m2\repository</p>
+
+<h4>Releasing</h4>
+
+<p>See the <a href="release-guide.html">Release Guide</a> for more details</p>
+
+</section>
+      <footer>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="release-notes.html">Release Notes</a></li>
+          <li><a href="maven-repo.html">Maven Repository</a></li>
+          <li><a href="building.html">Building</a></li>
+          <li><a href="getting-involved.html">Getting Involved</a></li>
+          <li><a href="release-guide.html">Release Guide</a></li>
+          <!--li></li>
+          <li></li-->
+        </ul>
+
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>
