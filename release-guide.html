@@ -29,7 +29,22 @@
 
 <h3>Prerequisites</h3>
 
-<p>You need to edit your ~/.m2/settings.xml to add the camel-extra servers. So your XML should look something like...</p>
+<p>To prepare or perform a release you MUST BE at least an Camel Extra committer.</p>
+
+<ul>
+<li>You need to be a commiter with privileges to the camel-extra project on Sonatype OSSRH.</li>
+<li>Make sure you have the correct maven configuration in <code>~/.m2/settings.xml</code>. See below.</li>
+<li>Make sure you are using Java 1.8 for Camel Extra 2.18.0 and later (Java 1.7 for older versions).</li>
+<li>make sure that you can build project locally for branch being released with the following command
+<code>
+mvn clean install -PwithRatCheck,integration
+</code></li>
+<li>make sure that build for branch being released succeeds on the <a href="https://camel-extra.ci.cloudbees.com">CI server</a></li>
+</ul>
+
+<h3>Maven setup</h3>
+
+<p>You also need to edit your ~/.m2/settings.xml to add the camel-extra servers. So your XML should look something like...</p>
 
 <pre>
 &lt;?xml version="1.0"?&gt;
@@ -45,45 +60,112 @@
             &lt;username&gt;MY_SONATYPE_USERNAME&lt;/username&gt;
             &lt;password&gt;MY_SONATYPE_PASSWORD&lt;/password&gt;
         &lt;/server&gt;
-...
+    &lt;/servers&gt;
+    &lt;profiles&gt;
+      &lt;profile&gt;
+        &lt;id&gt;apache-extra-release&lt;/id&gt;
+        &lt;properties&gt;
+          &lt;gpg.useagent&gt;false&lt;/gpg.executable&gt;
+          &lt;gpg.passphrase>the_pass_phrase&lt;/gpg.passphrase&gt;
+        &lt;/properties&gt;
+      &lt;/profile&gt;
+    &lt;/profiles&gt;
+&lt;/settings&gt;
 </pre>
 
-<p>If you are a committer you should then be able to submit a snapshot via</p>
 
-<p><code>
-mvn deploy
-</code></p>
+<h3>Creating the Camel Extra Release</h3>
 
-<h4>Before preparing the release</h4>
+<p>The release plugin will prompt for a release version, tag and next release version. Use a three digit release version of the form: 2.x.x and for the tag use a string of the form: camel-extra-2.x.x. The next version string should use the two digit from: 2.x-SNAPSHOT as this can be consistent for future SNAPSHOT releases.</p>
 
-<ul>
-<li>make sure that you can build project locally for branch being released with the following command
-<code>
-mvn clean install -PwithRatCheck
-</code></li>
-<li>make sure that build for branch being released succeeds on the <a href="https://camel-extra.ci.cloudbees.com">CI server</a></li>
-</ul>
-
-<h4>Performing a release</h4>
-
-<p>Use the normal maven release plugin.</p>
-
+<p>1. Grab the latest source from Git and checkout the target branch to build from. If you build a new release from master create a new branch
 <pre>
-mvn release:clean
-mvn -Dusername=MY_GOOGLE_ACCOUNT_NAME -Darguments="-Dgpg.passphrase=MY_GPG_PASSPHRASE" release:prepare
-mvn -Dusername=MY_GOOGLE_ACCOUNT_NAME -Darguments="-Dgpg.passphrase=MY_GPG_PASSPHRASE" release:perform
+git checkout BRANCH_NAME   # e.g. BRANCH_NAME = camel-extra-2.16.x
 </pre>
+</p>
 
-<h4>Activating Maven Central synchronization</h4>
+<p>2. Verify headers with <a href="http://creadur.apache.org/rat/apache-rat-plugin/usage.html">rat</a>
+<pre>
+mvn -e org.apache.rat:apache-rat-plugin:check
+grep -e ' !?????' target/rat.txt   # will show any files without licenses
+</pre>
+</p>
+<p>The grep command will return a list of files that don't have correct license headers. If nothing is returned, you can proceed with the next step. Otherwise fix the license header in all listed files and invoke both commands again until no files are returned.</p>
 
-<ul>
-<li>close release candidate staged to the Sonatype Nexus</li>
-<li>send staging repository link to the mailing lists so the others could verify the release candidate</li>
-<li>collect +1s from the other Camel Extra riders :)</li>
-<li>release staged artifacts via Sonatype Nexus</li>
-</ul>
+<p>3. Do a release dry run to check for problems
+<pre>
+mvn release:prepare -DdryRun=true -Psonatype-oss-release
+...
+[INFO] Checking dependencies and plugins for snapshots ...
+What is the release version for "Camel Extra"? (org.apache-extras.camel-extra:camel-parent) 2.18.0: : 
+What is SCM release tag or label for "Camel Extra"? (org.apache-extras.camel-extra:camel-parent) camel-parent-2.18.0: : camel-extra-2.18.0
+What is the new development version for "Camel Extra"? (org.apache-extras.camel-extra:camel-parent) 2.18.1-SNAPSHOT: : 2.18-SNAPSHOT
+</pre>
+</p>
 
-<p>More information related to the Sonatype release process can be found in the <a href="http://central.sonatype.org/pages/ossrh-guide.html">Sonatype OSS Maven Repository Usage Guide</a>.</p></markdown-widget>
+<p>Check that you are happy with the results. The poms for the proposed tags will be in pom.xml.tag. Check also the generated signature files:
+<pre>
+ullgren$ gpg target/camel-parent-2.18.0-SNAPSHOT.pom.asc 
+gpg: Signature made 2017-06-14T22:55:49 CEST using DSA key ID A2CF8A38
+gpg: Good signature from "Pontus Ullgren"
+</pre>
+</p>
+
+<p>4. Prepare the release<br/>
+<br/>
+When you like the results, clean up:
+<pre>
+mvn release:clean -Psonatype-oss-release
+</pre>
+</p>
+<p>
+Then run prepare for real this time
+<pre>
+mvn release:prepare -Psonatype-oss-release
+</pre>
+</p>
+<p>NOTE: If your git doesn't remember the username and password, you need pass it to the mvn plugin, otherwise the release plugin will wait forever. 
+<pre>
+mvn release:prepare -Dusername=USERNAME -Dpassword=PASSWORD -Psonatype-oss-release
+</pre>
+</p>
+
+<p>This will create the tag in git and leave various stuff around locally to direct the perform phase.</p>
+
+<p>5. Perform the release to the staging repo
+<pre>
+mvn release:perform -Psonatype-oss-release
+</pre>
+</p>
+
+<p>6. Close the staging repository</p>
+
+<p>Login to <a href="https://oss.sonatype.org/#stagingRepositories">https://oss.sonatype.org</a> using your Sonatype credentials. Click on "Staging Repositories". 
+Then select "orgapache-extrascamel-extra-xxx" in the list of repositories, where xxx represents a 4 digit sequential number. Click "Close" on the tool bar above. This will close the repository from future deployments and make it available for others to view.</p>
+
+<p>7. Verify staged artifacts</p>
+
+<p>If you click on your repository, a tree view will appear below. You can then browse the contents to ensure the artifacts are as you expect them. Pay particular attention to the existence of *.asc (signature) files. If the you don't like the content of the repository, right click your repository and choose "Drop". You can then rollback your release and repeat the process.<br/>
+Note the repository URL, you will need this in your vote email.</p>
+
+
+<h3>Testing the Camel Extra Release Candidate</h3>
+
+<p>When folks need to test out a release candidate, the jars will not have been uploaded to the central Maven repo. This means that the example programs which use Maven will not automatically work and you need to follow the <a href="http://camel.apache.org/testing-a-release-candidate.html">Testing a release candidate guidelines</a>.</p>
+
+<p>Afterwards send out the VOTE for this release candidate to the mailing list.</p>
+
+<h3>Announcing the Camel Extra Release</h3>
+
+<p>If the VOTE pass,</p>
+
+<ol>
+<li>Close it by sending the RESULT to the mailing list.</li>
+<li>Promote the artifacts to the central repo. For this login to <a href="https://oss.sonatype.org/#stagingRepositories">https://oss.sonatype.org</a> using your Sonatype credentials. Click on "Staging Repositories".<br/>
+Then select "orgapache-extrascamel-extra-xxx" in the list of repositories, where xxx represents a 4 digit sequential number. Click "Release" on the tool bar above. This will promote all artifacts to the central maven repo. Enter the name and version of the artifact being released in the "Description" field and then click "Release". This will make it easier to identify it later.</li>
+<li>Perform a release in JIRA and create a new release version in JIRA</li>
+<li>There should be already a release notes on the page makred as In Progress. Edit the release notes page and add a new in progress version.</li>
+</ol>
 
 </section>
       <footer>
